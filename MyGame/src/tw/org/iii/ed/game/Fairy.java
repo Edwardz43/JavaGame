@@ -57,5 +57,9 @@ public class Fairy {
             y = y + dy;
         }
 	}
+	
+	void setMove(String move){
+		
+	}
 
 }
