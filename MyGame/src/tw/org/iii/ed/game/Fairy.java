@@ -1,8 +1,10 @@
 package tw.org.iii.ed.game;
 
+import java.awt.Image;
 import java.util.LinkedList;
 
 public class Fairy {
+	Image img = GameUtil.getImage("img/fairy_f02.png");
 	int level, hp, maxHp, width, height, 
 				exp, levelupExp, x, y, dx, dy, speed,
 				atk, imgCount, hitCount, chagreCount, deadCount,

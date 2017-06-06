@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 public class FairyQuest extends JPanel{
 	private int viewW, viewH;
 	private JPanel menuBar;
-	private Image imgFairy = GameUtil.getImage("img/fairy_f02.png");
+	
 	private Image imgBG = GameUtil.getImage("img/BG003.jpg");
 	private Image imgMigicBall = GameUtil.getImage("img/magicball.png");
 	private Image imgBigBall = GameUtil.getImage("img/bigball.png");
@@ -33,6 +33,7 @@ public class FairyQuest extends JPanel{
 	private int m = 0;
 	private Fairy fairy = new Fairy(1, 500, 100, 100);
 	private static int scale;
+	LinkedList<Enermy> enermies = new LinkedList();
 //	private Ball ball;
 //	private LinkedList<Ball> balls;
 	
@@ -62,9 +63,6 @@ public class FairyQuest extends JPanel{
 		public void keyPressed(KeyEvent e){
 //			System.out.println(e.getKeyCode());
 			switch (e.getKeyCode()){
-				case 32:
-					fairy.shot();
-					break;
 				case 37:
 					fairy.setMove("LEFT");
 					System.out.println(fairy.move);
@@ -86,6 +84,9 @@ public class FairyQuest extends JPanel{
 		
 		public void keyReleased(KeyEvent e){
 			switch (e.getKeyCode()){
+				case 32:
+					fairy.shot();
+					break;
 				case 37: case 39:
 					fairy.setMove("h-NONE");
 					System.out.println(fairy.move);
@@ -101,7 +102,12 @@ public class FairyQuest extends JPanel{
 	private class ViewTask extends TimerTask{
 		@Override
 		public void run() {
+			//妖精
 			fairy.move();
+			fairy.imgCount++;
+			if(fairy.imgCount >= 18) fairy.imgCount = 0;
+			
+			//妖精子彈
 			if(fairy.balls != null){
 				for(int i = 0; i < fairy.balls.size(); i++) {
 					Ball ball = fairy.balls.get(i);
@@ -110,8 +116,20 @@ public class FairyQuest extends JPanel{
 					if(ball.imgCount >= 180) ball.imgCount = 0;					
 				}
 			}
-			fairy.imgCount++;
-			if(fairy.imgCount >= 18) fairy.imgCount = 0;
+			
+			//怪物
+			if(Math.random() * 200 < 1) 
+			enermies.add(new Enermy("Shadow", fairy.level,
+									1300, 400 + (int)(Math.random()*80)));
+//            if(enermys.length == 0) Math.random() > 0.5 ? enermys.push(new enermyShadow()) : enermys.push(new enermyHarpy());    
+			if(enermies != null){
+				for(int i = 0; i < enermies.size(); i++){
+					Enermy e = enermies.get(i);
+					e.move();
+					e.imgCount++;
+					if(e.imgCount >= 18) e.imgCount = 0;
+				}
+			}
 			m++;
 			if(m >= 788) m = 0;
 			repaint();
@@ -143,8 +161,21 @@ public class FairyQuest extends JPanel{
 //				);
 			}
 		}
+		
+		if(enermies != null){
+			for(int i = 0; i < enermies.size(); i++){
+				Enermy e = enermies.get(i);
+				g2d.drawImage(
+						e.img, e.x, e.y, 
+						e.x + e.width, e.y + e.height, 
+						0 + e.imgCount / 6 *60, 60, 
+						(e.imgCount/6+1)*60, 120, null
+				);
+			}
+		}
+		
 		g2d.drawImage(
-				imgFairy, fairy.x, fairy.y, 
+				fairy.img, fairy.x, fairy.y, 
 				fairy.x + fairy.width, fairy.y + fairy.height,
 				0 + fairy.imgCount/6*50, 84, 
 				(fairy.imgCount/6+1)*50, 126, null
@@ -153,7 +184,7 @@ public class FairyQuest extends JPanel{
 	
 	public static void main(String[] args){
 		GameFrame gf = new GameFrame();
-		FairyQuest fq = new FairyQuest();
+		FairyQuest fq = new FairyQuest(); 
 		gf.add(fq);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		double width = screenSize.getWidth();
