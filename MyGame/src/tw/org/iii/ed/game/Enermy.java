@@ -34,4 +34,10 @@ public class Enermy {
          this.x += this.dx;
          this.y += this.dy;
 	}
+	
+	void shot(int fx, int fy){
+		int deltaX = (int)(4.5* Math.sin(Math.atan2(this.x - fx, this.y - fy)));
+        int deltaY = (int)(4.5* Math.cos(Math.atan2(this.x - fx, this.y - fy)));
+		if(Math.random() * 200 < 1 ) this.balls.add(new Ball(this.x , this.y, 0, -deltaX, -deltaY, this.type));
+	}
 }

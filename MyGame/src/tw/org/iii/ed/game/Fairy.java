@@ -62,16 +62,18 @@ public class Fairy {
             }
             this.x = this.x + this.dx;
             this.y = this.y + this.dy;
+            this.imgCount++;
+    		if(this.imgCount >= 18) this.imgCount = 0;
         }
 	}
 	
 	void setMove(String move){
-		this.move = move; 
+		this.move = move;
 	}
 	
 	void shot(){
 //		
-		this.balls.add(new Ball(this.x - 5, this.y + 2, 0, 3, 0));
+		this.balls.add(new Ball(this.x - 5, this.y + 2, 0, 3, 0, "Fairy"));
 //		System.out.println(this.balls.size());
 		//		System.out.println("shot");
 //		this.shotTimes++;

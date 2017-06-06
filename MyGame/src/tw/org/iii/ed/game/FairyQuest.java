@@ -27,8 +27,7 @@ public class FairyQuest extends JPanel{
 	private JPanel menuBar;
 	
 	private Image imgBG = GameUtil.getImage("img/BG003.jpg");
-	private Image imgMigicBall = GameUtil.getImage("img/magicball.png");
-	private Image imgBigBall = GameUtil.getImage("img/bigball.png");
+	
 	private Timer timer = new Timer();
 	private int m = 0;
 	private Fairy fairy = new Fairy(1, 500, 100, 100);
@@ -103,37 +102,54 @@ public class FairyQuest extends JPanel{
 		@Override
 		public void run() {
 			//妖精
-			fairy.move();
-			fairy.imgCount++;
-			if(fairy.imgCount >= 18) fairy.imgCount = 0;
-			
-			//妖精子彈
-			if(fairy.balls != null){
-				for(int i = 0; i < fairy.balls.size(); i++) {
-					Ball ball = fairy.balls.get(i);
-					ball.move();
-					ball.imgCount++;
-					if(ball.imgCount >= 180) ball.imgCount = 0;					
-				}
-			}
+			updateFairy();
 			
 			//怪物
-			if(Math.random() * 200 < 1) 
-			enermies.add(new Enermy("Shadow", fairy.level,
-									1300, 400 + (int)(Math.random()*80)));
-//            if(enermys.length == 0) Math.random() > 0.5 ? enermys.push(new enermyShadow()) : enermys.push(new enermyHarpy());    
-			if(enermies != null){
-				for(int i = 0; i < enermies.size(); i++){
-					Enermy e = enermies.get(i);
-					e.move();
-					e.imgCount++;
-					if(e.imgCount >= 18) e.imgCount = 0;
-				}
-			}
+			updateEnermy();
+			
 			m++;
 			if(m >= 788) m = 0;
 			repaint();
 		}
+	}
+	
+	void updateFairy(){
+		fairy.move();
+		if(fairy.balls != null){
+			for(int i = 0; i < fairy.balls.size(); i++) {
+				Ball ball = fairy.balls.get(i);
+				ball.move();
+				ball.imgCount++;
+				if(ball.imgCount >= 180) ball.imgCount = 0;					
+			}
+		}
+	}
+	
+	void updateEnermy(){
+		if(Math.random() * 200 < 1) 
+			enermies.add(new Enermy("Shadow", fairy.level, 1300, 400 + (int)(Math.random()*80)));
+//		if(enermys.length == 0) Math.random() > 0.5 ? enermys.push(new enermyShadow()) : enermys.push(new enermyHarpy());    
+		if(enermies != null){
+			for(int i = 0; i < enermies.size(); i++){
+				Enermy e = enermies.get(i);
+				e.shot(fairy.x, fairy.y);
+				e.imgCount++;
+				if(e.imgCount >= 18) e.imgCount = 0;
+				if(e.balls != null){
+					for(int j = 0; j < e.balls.size(); j++) {
+						Ball ball = e.balls.get(j);
+						ball.move();
+						ball.imgCount++;
+						if(ball.imgCount >= 180) ball.imgCount = 0;					
+					}
+				}
+				e.move();
+				if(e.x + e.width < -20 ) {
+                    enermies.remove(enermies.indexOf(e));
+                }
+			}
+		}
+		
 	}
 	
 	@Override
@@ -148,7 +164,7 @@ public class FairyQuest extends JPanel{
 			for(int i = 0; i < fairy.balls.size(); i++){
 				Ball ball = fairy.balls.get(i);
 				g2d.drawImage(
-						imgMigicBall, ball.x, ball.y,
+						ball.img, ball.x, ball.y,
 						ball.x + ball.width, ball.y + ball.height,
 						320*(ball.imgCount/6%3), 240*(ball.imgCount/18),
 						320*(ball.imgCount/6%3+1), 240*(ball.imgCount/18+1), null
@@ -162,6 +178,8 @@ public class FairyQuest extends JPanel{
 			}
 		}
 		
+		
+		
 		if(enermies != null){
 			for(int i = 0; i < enermies.size(); i++){
 				Enermy e = enermies.get(i);
@@ -171,6 +189,18 @@ public class FairyQuest extends JPanel{
 						0 + e.imgCount / 6 *60, 60, 
 						(e.imgCount/6+1)*60, 120, null
 				);
+				
+				if(e.balls != null){	
+					for(int j = 0; j < e.balls.size(); j++){
+						Ball ball = e.balls.get(j);
+						g2d.drawImage(
+								ball.img, ball.x, ball.y,
+								ball.x + ball.width, ball.y + ball.height,
+								120*(ball.imgCount/6%5), 120*(ball.imgCount/30),
+								120*(ball.imgCount/6%5+1), 120*(ball.imgCount/30+1), null
+						);
+					}
+				}
 			}
 		}
 		
