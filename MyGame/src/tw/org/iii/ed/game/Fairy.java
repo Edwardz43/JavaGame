@@ -1,5 +1,7 @@
 package tw.org.iii.ed.game;
 
+import java.util.LinkedList;
+
 public class Fairy {
 	int level, hp, maxHp, width, height, 
 				exp, levelupExp, x, y, dx, dy, speed,
@@ -7,6 +9,8 @@ public class Fairy {
 				chargeNum;
 	boolean hurt, died;
 	String move, dir;
+	LinkedList<Ball> balls;
+	int shotTimes = 0;
 	
 	public Fairy(int lv, int maxHp, int x, int y){
 		this.level = lv;
@@ -18,48 +22,57 @@ public class Fairy {
 		this. atk = 6; this.dir ="r";
 		this.imgCount = this.hitCount = this.chagreCount = this.deadCount = this.chargeNum = 0; 
 		this.exp = this.levelupExp = 0;
+		this.balls = new LinkedList();
 	}
 	
 	void move(){
-		if(hp > 0){
-            switch (move) {
+		if(this.hp > 0){
+            switch (this.move) {
                 case "LEFT":
-                    dx = -speed;
-                    dir = "l";
+                	this.dx = -this.speed;
+                	this.dir = "l";
                     break;
                 case "RIGHT":
-                    dx = speed;
-                    dir = "r";
+                	this.dx = this.speed;
+                	this.dir = "r";
                     break;
                 case "UP":
-                    dy = -speed;  
+                	this.dy = -this.speed;  
                     break;
                 case "DOWN":
-                    dy = speed; 
+                	this.dy = this.speed; 
                     break;
                 case "h-NONE":
-                    dx = 0;
+                	this.dx = 0;
                     break;
                 case "v-NONE":
-                    dy = 0;
+                	this.dy = 0;
                     break;
                 default:
-                    dx = 0;
-                    dy = 0;
+                	this.dx = 0;
+                	this.dy = 0;
             }
-            if (x + dx < 0 || x + dx + width >= 1000){
-                dx = 0; 
+            if (this.x + this.dx < 0 || this.x + this.dx + this.width >= 1280){
+            	this.dx = 0; 
             }
-            if (y + dy < 0 || y + dy +height > 600){
-                dy = 0; 
+            if (this.y + this.dy < 0 || this.y + this.dy +this.height > 580){
+            	this.dy = 0; 
             }
-            x = x + dx;
-            y = y + dy;
+            this.x = this.x + this.dx;
+            this.y = this.y + this.dy;
         }
 	}
 	
 	void setMove(String move){
-		
+		this.move = move; 
+	}
+	
+	void shot(){
+//		
+		this.balls.add(new Ball(this.x - 5, this.y + 2, 0, 3, 0));
+//		System.out.println(this.balls.size());
+		//		System.out.println("shot");
+//		this.shotTimes++;
 	}
 
 }
