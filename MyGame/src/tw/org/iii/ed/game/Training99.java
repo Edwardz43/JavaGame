@@ -40,11 +40,8 @@ public class Training99 extends JPanel{
 				startgame();
 			}
 		});
-		add(menuBar, BorderLayout.NORTH);
 		balls = new LinkedList<>();
-		timer = new Timer();
-		timer.schedule(new ViewTask(),0, 16);
-		timer.schedule(new createBall(), 1000 , 70);
+		add(menuBar, BorderLayout.NORTH);
 		gameStage = 0;
 		addMouseMotionListener(new MyMouseAdapter());
 	}
@@ -63,9 +60,14 @@ public class Training99 extends JPanel{
 	}
 	
 	protected void startgame() {
-		balls.clear();
-		gameStage = 1;
-		startTime = System.currentTimeMillis();
+		if(gameStage != 1){
+			timer = new Timer();
+			balls.clear();
+			gameStage = 1;
+			startTime = System.currentTimeMillis();
+			timer.schedule(new ViewTask(),0, 16);
+			timer.schedule(new createBall(), 1000 , 70);
+		}
 	}
 	
 	protected String rank(double time){
@@ -122,6 +124,7 @@ public class Training99 extends JPanel{
 						ball.y += ball.dy;
 						if(ball.x+10 >= shipX  && ball.x - 10 <= shipX+10 && ball.y +10 >= shipY && ball.y -10 <= shipY + 10 ){
 							gameStage = 2;
+							timer.cancel();
 							endTime = System.currentTimeMillis()- startTime;
 							System.out.println("playTime:"+endTime/1000.0);
 						}
