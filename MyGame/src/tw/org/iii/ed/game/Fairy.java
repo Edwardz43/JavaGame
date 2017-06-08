@@ -5,29 +5,27 @@ import java.util.LinkedList;
 
 public class Fairy {
 	Image img = GameUtil.getImage("img/fairy_f02.png");
-	int level, hp, maxHp, width, height, 
-				exp, levelupExp, x, y, dx, dy, speed,
-				atk, imgCount, hitCount, chagreCount, deadCount,
-				chargeNum;
+	Image imgHead = GameUtil.getImage("img/fairy_f14.png");
+	int hp, maxHp, width, height, 
+		x, y, dx, dy, speed,
+		atk, imgCount, hurtCount, chagreCount, deadCount,
+		chargeNum, hpBar;
 	boolean hurt, died;
 	String move, dir;
-	LinkedList<Ball> balls;
 	int shotTimes = 0;
 	
-	public Fairy(int lv, int maxHp, int x, int y){
-		this.level = lv;
+	public Fairy(int maxHp, int x, int y){
 		this.hp = this.maxHp = maxHp;
 		this.x = x; this.y = y;
 		this.dx = this.dy = 0; this.speed = 5;
 		this.width = 100; this.height = 84;
 		this.move = "none"; this.hurt = false; this.died = false;
-		this. atk = 6; this.dir ="r";
-		this.imgCount = this.hitCount = this.chagreCount = this.deadCount = this.chargeNum = 0; 
-		this.exp = this.levelupExp = 0;
-		this.balls = new LinkedList();
+		this.atk = 30; this.dir ="r";
+		this.imgCount = this.hurtCount = this.chagreCount = this.deadCount = this.chargeNum = 0;
+		this.hpBar = 400;
 	}
 	
-	void move(){
+	public void move(){
 		if(this.hp > 0){
             switch (this.move) {
                 case "LEFT":
@@ -67,16 +65,13 @@ public class Fairy {
         }
 	}
 	
-	void setMove(String move){
+	public void setMove(String move){
 		this.move = move;
 	}
 	
-	void shot(){
-//		
-		this.balls.add(new Ball(this.x - 5, this.y + 2, 0, 3, 0, "Fairy"));
-//		System.out.println(this.balls.size());
-		//		System.out.println("shot");
-//		this.shotTimes++;
+	public void shot(LinkedList<Ball> balls){		
+		balls.add(
+			new Ball(this.x - 5, this.y + 2, this.atk, this.dir=="l"?-3:3, 0, "Fairy")
+		);
 	}
-
 }
