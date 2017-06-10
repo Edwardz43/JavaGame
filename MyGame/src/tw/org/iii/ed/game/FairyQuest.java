@@ -60,7 +60,7 @@ public class FairyQuest extends JPanel{
 	    
 	private class MyKeyListener extends KeyAdapter{
 		public void keyPressed(KeyEvent e){
-//			System.out.println(e.getKeyCode());
+			System.out.println(e.getKeyCode());
 			switch (e.getKeyCode()){
 				case 32:
 					fairy.shot(fairyBalls);
@@ -80,7 +80,10 @@ public class FairyQuest extends JPanel{
 				case 40:
 					fairy.setMove("DOWN");
 					//System.out.println(fairy.move);
-					break;	
+					break;
+				case 65:
+					fairy.recover();
+					break;
 			}
 		}
 		
@@ -117,8 +120,9 @@ public class FairyQuest extends JPanel{
 	}
 	
 	void updateFairy(){
+		int length = 180;
 		fairy.move();
-		fairy.hpBar = fairy.died ? 0 : (int)((float)fairy.hp / fairy.maxHp * 400);
+		fairy.hpBar = fairy.died ? 0 : (int)((float)fairy.hp / fairy.maxHp * length);
 		if(fairy.hurt && fairy.hurtCount <= 600) fairy.hurtCount++;
 		if(fairy.hurtCount > 60) {
 			fairy.hurtCount = 0;
@@ -144,7 +148,7 @@ public class FairyQuest extends JPanel{
 				Enermy e = enermies.get(i);
 				if(e.died){
 					e.imgCount++;
-					if(e.imgCount >= 30){
+					if(e.imgCount >= 49){
 						enermies.remove(enermies.indexOf(e));
 						enemyCount++;
 						if(enemyCount % 10 == 0) enermies.add(new Enermy("Knight"));
@@ -364,11 +368,22 @@ public class FairyQuest extends JPanel{
 		
 		
 		//主角狀態
-		g2d.drawImage(fairy.imgHead, 0, 10, 90, 100, 97, 0, 192, 96,  null);
+		//頭像
+		g2d.setColor(new Color(192, 125, 53, 190));
+		g2d.fillRect(0, 0, 320, 107);
+		g2d.setColor(new Color(182, 152, 88));
+		g2d.fillOval(-105, -105, 210, 210);
+		g2d.setColor(new Color(87, 74, 71, 100));
+		g2d.fillOval(-95, -95, 190, 190);
+		g2d.drawImage(fairy.imgHead, 0, 0, 70, 70, 97, 0, 192, 96,  null);
+		
+		//HP bar
 		g2d.setColor(Color.GRAY);
-		g2d.drawRect(92, 24, 404, 24);
+		g2d.drawRect(125, 50, 180 + 4, 24);
 		g2d.setColor(fairy.hpBar <= 80 ? Color.red : Color.GREEN);
-		g2d.fillRect(94, 26, fairy.hpBar > 0 ? fairy.hpBar : 0, 20);
+		g2d.fillRect(127, 52, fairy.hpBar > 0 ? fairy.hpBar : 0, 20);
+		g2d.setColor(Color.yellow);
+		g2d.drawString("HP", 97, 67);
 	}
 	
 	public static void main(String[] args){

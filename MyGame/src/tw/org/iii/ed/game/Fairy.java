@@ -22,7 +22,6 @@ public class Fairy {
 		this.move = "none"; this.hurt = false; this.died = false;
 		this.atk = 30; this.dir ="r";
 		this.imgCount = this.hurtCount = this.chagreCount = this.deadCount = this.chargeNum = 0;
-		this.hpBar = 400;
 	}
 	
 	public void move(){
@@ -73,5 +72,9 @@ public class Fairy {
 		balls.add(
 			new Ball(this.x - 5, this.y + 2, this.atk, this.dir=="l"?-3:3, 0, "Fairy")
 		);
+	}
+	
+	public void recover(){
+		this.hp = this.maxHp;
 	}
 }
