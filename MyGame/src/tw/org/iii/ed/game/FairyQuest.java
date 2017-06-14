@@ -60,11 +60,9 @@ public class FairyQuest extends JPanel{
 	    
 	private class MyKeyListener extends KeyAdapter{
 		public void keyPressed(KeyEvent e){
-			System.out.println(e.getKeyCode());
+//			System.out.println(e.getKeyCode());
+			if(e.getKeyCode() == 32) fairy.charge();
 			switch (e.getKeyCode()){
-				case 32:
-					fairy.shot(fairyBalls);
-					break;
 				case 37:
 					fairy.setMove("LEFT");
 					//System.out.println(fairy.move);
@@ -89,6 +87,9 @@ public class FairyQuest extends JPanel{
 		
 		public void keyReleased(KeyEvent e){
 			switch (e.getKeyCode()){
+				case 32:
+					fairy.shot(fairyBalls);
+					break;
 				case 37: case 39:
 					fairy.setMove("h-NONE");
 					//System.out.println(fairy.move);
@@ -128,6 +129,7 @@ public class FairyQuest extends JPanel{
 			fairy.hurtCount = 0;
 			fairy.hurt = false;
 		}
+		
 		if(fairyBalls != null){
 			for(int i = 0; i < fairyBalls.size(); i++) {
 				Ball ball = fairyBalls.get(i);
@@ -369,11 +371,13 @@ public class FairyQuest extends JPanel{
 		
 		//主角狀態
 		//頭像
-		g2d.setColor(new Color(192, 125, 53, 190));
+		g2d.setColor(Color.gray);
+		g2d.drawRect(0, 0, 321, 108);
+		g2d.setColor(new Color(192, 125, 53, 230));
 		g2d.fillRect(0, 0, 320, 107);
 		g2d.setColor(new Color(182, 152, 88));
 		g2d.fillOval(-105, -105, 210, 210);
-		g2d.setColor(new Color(87, 74, 71, 100));
+		g2d.setColor(new Color(50, 54, 57, 150));
 		g2d.fillOval(-95, -95, 190, 190);
 		g2d.drawImage(fairy.imgHead, 0, 0, 70, 70, 97, 0, 192, 96,  null);
 		

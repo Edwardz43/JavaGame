@@ -10,7 +10,7 @@ public class Fairy {
 		x, y, dx, dy, speed,
 		atk, imgCount, hurtCount, chagreCount, deadCount,
 		chargeNum, hpBar;
-	boolean hurt, died;
+	boolean hurt, died, isCharging;
 	String move, dir;
 	int shotTimes = 0;
 	
@@ -19,7 +19,7 @@ public class Fairy {
 		this.x = x; this.y = y;
 		this.dx = this.dy = 0; this.speed = 5;
 		this.width = 100; this.height = 84;
-		this.move = "none"; this.hurt = false; this.died = false;
+		this.move = "none"; this.hurt = false; this.died = false; this.isCharging = false;
 		this.atk = 30; this.dir ="r";
 		this.imgCount = this.hurtCount = this.chagreCount = this.deadCount = this.chargeNum = 0;
 	}
@@ -68,12 +68,20 @@ public class Fairy {
 		this.move = move;
 	}
 	
-	public void shot(LinkedList<Ball> balls){		
+	public void shot(LinkedList<Ball> balls){
+		this.isCharging = false;
 		balls.add(
 			new Ball(this.x - 5, this.y + 2, this.atk, this.dir=="l"?-3:3, 0, "Fairy")
 		);
+		this.chargeNum = 0;
 	}
 	
+	public void charge(){
+		if(this.chargeNum >=50) this.isCharging = true;
+		this.chargeNum++;
+		System.out.println(this.chargeNum);
+	}
+	//測試用 回滿HP
 	public void recover(){
 		this.hp = this.maxHp;
 	}
