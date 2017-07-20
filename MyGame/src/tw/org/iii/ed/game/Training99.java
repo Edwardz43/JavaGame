@@ -65,7 +65,7 @@ public class Training99 extends JPanel{
 			balls.clear();
 			gameStage = 1;
 			startTime = System.currentTimeMillis();
-			timer.schedule(new ViewTask(),0, 16);
+			timer.schedule(new ViewTask(),0, 10);
 			timer.schedule(new createBall(), 1000 , 70);
 		}
 	}
@@ -136,7 +136,7 @@ public class Training99 extends JPanel{
 	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	protected synchronized void paintComponent(Graphics g) {
 		viewW = getWidth(); viewH=getHeight();
 		Graphics2D g2d= (Graphics2D)g;
 		g2d.clearRect(0, 0, viewW, viewH);
